@@ -1,0 +1,66 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Única permissão necessária: internet.
+         Não pedimos acesso amplo ao armazenamento: a pasta é escolhida pelo usuário
+         no seletor do sistema (Storage Access Framework). -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:label="ClipCerto"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <!-- Ícone na tela inicial -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Aparece no menu "Compartilhar" de YouTube, TikTok, Instagram,
+                 navegador etc. quando o conteúdo compartilhado é um texto/link. -->
+            <intent-filter android:label="Salvar com ClipCerto">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <!-- Recebe VÍDEOS e ÁUDIOS compartilhados pela galeria ou por outros apps
+                 (para salvar, extrair o áudio ou transcrever). -->
+            <intent-filter android:label="Abrir no ClipCerto">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+    <!-- Visibilidade de apps (Android 11+): permite abrir links https nos apps oficiais. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+</manifest>

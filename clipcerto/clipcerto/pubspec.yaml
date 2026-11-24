@@ -1,0 +1,31 @@
+name: clipcerto
+description: "ClipCerto: salve, com autorização, os vídeos que você tem direito de guardar."
+publish_to: 'none'
+version: 2.0.0+2
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Requisições HTTP com download em fluxo (sem carregar o vídeo inteiro na memória)
+  http: ^1.2.2
+  # Guarda configurações simples: pasta de destino, histórico, token
+  shared_preferences: ^2.3.2
+  # Abre links no app oficial (YouTube, TikTok, Instagram) ou no navegador
+  url_launcher: ^6.3.0
+  # Seletor de pasta no computador (Windows, macOS, Linux)
+  file_selector: ^1.0.3
+  # Pasta temporária do app (usada no Android antes de copiar para a pasta escolhida)
+  path_provider: ^2.1.4
+  # Funções para montar caminhos de arquivo
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
