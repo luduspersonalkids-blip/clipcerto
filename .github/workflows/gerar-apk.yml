@@ -1,8 +1,5 @@
-# Compila o ClipCerto na nuvem do GitHub (gratuito para repositórios públicos e
-# com cota mensal gratuita para privados). Gera:
-#  - o APK Android (ClipCerto-android)
-#  - a versão para Windows (ClipCerto-windows)
-# Para rodar: aba Actions do repositório > "Gerar APK e Windows" > Run workflow.
+# Compila o ClipCerto na nuvem do GitHub.
+# O projeto está dentro da pasta "clipcerto" do repositório.
 
 name: Gerar APK e Windows
 
@@ -14,6 +11,9 @@ on:
 jobs:
   android:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: clipcerto
     steps:
       - uses: actions/checkout@v4
 
@@ -43,10 +43,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ClipCerto-android
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: clipcerto/build/app/outputs/flutter-apk/app-release.apk
 
   windows:
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: clipcerto
     steps:
       - uses: actions/checkout@v4
 
@@ -66,4 +69,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ClipCerto-windows
-          path: build/windows/x64/runner/Release
+          path: clipcerto/build/windows/x64/runner/Release
