@@ -1,0 +1,69 @@
+# Compila o ClipCerto na nuvem do GitHub (gratuito para repositórios públicos e
+# com cota mensal gratuita para privados). Gera:
+#  - o APK Android (ClipCerto-android)
+#  - a versão para Windows (ClipCerto-windows)
+# Para rodar: aba Actions do repositório > "Gerar APK e Windows" > Run workflow.
+
+name: Gerar APK e Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Preparar projeto
+        run: bash scripts/preparar_projeto.sh
+
+      - name: Analisar código
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Testes
+        run: flutter test
+
+      - name: Compilar APK
+        run: flutter build apk --release
+
+      - name: Publicar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClipCerto-android
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Preparar projeto
+        shell: pwsh
+        run: ./scripts/preparar_projeto.ps1
+
+      - name: Compilar Windows
+        run: flutter build windows --release
+
+      - name: Publicar versão Windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClipCerto-windows
+          path: build/windows/x64/runner/Release
